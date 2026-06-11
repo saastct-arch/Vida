@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback } from 'react'
 import { supabase } from '../../lib/supabase.js'
-import { REFEICOES, METAS_NUTRI } from '../../lib/constants.js'
+import { REFEICOES, METAS_NUTRI, metaCaloricaDia, sugestaoRefeicao } from '../../lib/constants.js'
 import { number } from '../../lib/format.js'
 import { ProgressBar, SectionHead, Skeleton } from '../../components/ui.jsx'
 import MealCard from './MealCard.jsx'
@@ -40,7 +40,7 @@ export default function TabHoje({ userId, data }) {
         <Skeleton h={70} />
       ) : (
         <div className="grid grid-4">
-          <ResumoCard titulo="Calorias" cor="red" valor={totais.calorias} meta={METAS_NUTRI.calorias} unidade="kcal" />
+          <ResumoCard titulo="Calorias" cor="red" valor={totais.calorias} meta={metaCaloricaDia(data)} unidade="kcal" />
           <ResumoCard titulo="Proteína" cor="green" valor={totais.proteinas_g} meta={METAS_NUTRI.proteinas_g} unidade="g" />
           <ResumoCard titulo="Carboidrato" cor="blue" valor={totais.carboidratos_g} meta={METAS_NUTRI.carboidratos_g} unidade="g" />
           <ResumoCard titulo="Gordura" cor="amber" valor={totais.gorduras_totais_g} meta={METAS_NUTRI.gorduras_totais_g} unidade="g" />
@@ -55,7 +55,7 @@ export default function TabHoje({ userId, data }) {
         ) : (
           <div className="col gap-8">
             {REFEICOES.map((r) => (
-              <MealCard key={r.key} userId={userId} data={data} refeicao={r} registro={registros[r.nome]} onSaved={carregar} />
+              <MealCard key={r.key} userId={userId} data={data} refeicao={r} registro={registros[r.nome]} sugestao={sugestaoRefeicao(data, r.nome)} onSaved={carregar} />
             ))}
           </div>
         )}

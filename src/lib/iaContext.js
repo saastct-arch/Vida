@@ -5,6 +5,7 @@ import { supabase } from './supabase.js'
 import { toISODate } from './format.js'
 import {
   PERFIL, PESO_INICIAL, PESO_META, INVEST_INICIAL, INVEST_METAS,
+  NUTRI_BASE, METAS_NUTRI, metaCaloricaDia, planoDoDia,
 } from './constants.js'
 import { eventosFixosDoMes, vrDoMes } from './finance.js'
 
@@ -42,6 +43,13 @@ export async function coletarContexto(userId) {
       meta: PESO_META,
     },
     refeicoesHoje: refeicoes.data || [],
+    dieta: {
+      metaCaloriasHoje: metaCaloricaDia(hojeISO),
+      macros: { proteinaG: METAS_NUTRI.proteinas_g, carboidratoG: METAS_NUTRI.carboidratos_g, gorduraG: METAS_NUTRI.gorduras_totais_g },
+      tmb: NUTRI_BASE.tmb,
+      tdee: NUTRI_BASE.tdee,
+      treinoHoje: planoDoDia(hojeISO)?.treino || null,
+    },
     treinosRecentes: treino.data || [],
     financeiro: {
       gastosMes: +gastosMes.toFixed(2),

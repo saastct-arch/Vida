@@ -43,24 +43,26 @@ export default function Suplementacao({ userId, data }) {
 
   return (
     <div className="grid grid-2">
-      <SupCard nome="Whey protein" on={reg?.whey} onToggle={() => toggle('whey')}
+      <SupCard nome={SUPLEMENTOS.whey.nome} on={reg?.whey} onToggle={() => toggle('whey')}
+        info={`${SUPLEMENTOS.whey.doseG} g/dose`}
         estoque={wheyDoses != null ? `${wheyDoses} doses` : 'estoque não informado'} alerta={alertaWhey} />
-      <SupCard nome="Creatina" on={reg?.creatina} onToggle={() => toggle('creatina')}
+      <SupCard nome={SUPLEMENTOS.creatina.nome} on={reg?.creatina} onToggle={() => toggle('creatina')}
+        info={`${SUPLEMENTOS.creatina.doseG} g/dia`}
         estoque={creatinaDias != null ? `${creatinaDias} dias` : 'estoque não informado'} alerta={alertaCreatina} />
     </div>
   )
 }
 
-function SupCard({ nome, on, onToggle, estoque, alerta }) {
+function SupCard({ nome, on, onToggle, info, estoque, alerta }) {
   return (
     <div className="card card-pad" style={{ padding: 12 }}>
       <div className="row gap-10">
         <button onClick={onToggle} className={`check-circle ${on ? 'on' : ''}`} style={{ border: 0, background: on ? 'var(--green)' : 'var(--card)', boxShadow: on ? 'none' : 'inset 0 0 0 2px var(--border-input)' }}>
           {on && <Check size={13} />}
         </button>
-        <div className="flex-1">
+        <div className="flex-1" style={{ minWidth: 0 }}>
           <div style={{ fontSize: 13, fontWeight: 500 }}>{nome}</div>
-          <div className="text-muted mono" style={{ fontSize: 11 }}>{estoque}</div>
+          <div className="text-muted mono" style={{ fontSize: 11 }}>{info} · {estoque}</div>
         </div>
         {alerta && <Badge tipo="amber">repor</Badge>}
       </div>

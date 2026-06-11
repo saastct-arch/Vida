@@ -12,7 +12,7 @@ const CAMPOS_VAZIOS = {
 }
 
 // Card de refeição expansível com campos nutricionais agrupados por categoria.
-export default function MealCard({ userId, data, refeicao, registro, onSaved }) {
+export default function MealCard({ userId, data, refeicao, registro, sugestao, onSaved }) {
   const toast = useToast()
   const [aberto, setAberto] = useState(false)
   const [salvando, setSalvando] = useState(false)
@@ -66,7 +66,10 @@ export default function MealCard({ userId, data, refeicao, registro, onSaved }) 
       <button onClick={() => setAberto((a) => !a)}
         style={{ width: '100%', background: 'none', border: 0, padding: '12px 14px', display: 'flex', alignItems: 'center', gap: 10 }}>
         <span className={`check-circle ${concluida ? 'on' : ''}`}>{concluida && <Check size={13} />}</span>
-        <span style={{ fontSize: 14, fontWeight: 500, flex: 1, textAlign: 'left' }}>{refeicao.nome}</span>
+        <span style={{ flex: 1, textAlign: 'left', minWidth: 0 }}>
+          <span style={{ fontSize: 14, fontWeight: 500, display: 'block' }}>{refeicao.nome}</span>
+          {refeicao.horario && <span className="font-label text-muted" style={{ fontSize: 10 }}>{refeicao.horario}</span>}
+        </span>
         <Badge tipo={badge.tipo}>{badge.txt}</Badge>
         <ChevronDown size={17} className={`chevron ${aberto ? 'open' : ''}`} color="var(--text-muted)" />
       </button>
@@ -74,6 +77,17 @@ export default function MealCard({ userId, data, refeicao, registro, onSaved }) 
       {/* Body expansível */}
       {aberto && (
         <div style={{ padding: '4px 14px 16px' }}>
+          {/* Sugestão do plano para o dia */}
+          {sugestao?.length > 0 && (
+            <div style={{ background: 'var(--green-light-bg)', borderRadius: 8, padding: '10px 12px', marginBottom: 12 }}>
+              <div className="font-label" style={{ fontSize: 10, color: 'var(--green-dark)', marginBottom: 4 }}>SUGESTÃO DO PLANO</div>
+              <div style={{ fontSize: 12.5, color: 'var(--text-secondary)', lineHeight: 1.5 }}>{sugestao.join(' · ')}</div>
+            </div>
+          )}
+          {refeicao.nota && (
+            <div className="text-muted" style={{ fontSize: 11.5, marginBottom: 12, fontStyle: 'italic' }}>{refeicao.nota}</div>
+          )}
+
           {/* CALORIAS — destaque isolado */}
           <div style={{ background: 'var(--amber-light-bg)', border: '1px solid var(--amber-border)', borderRadius: 10, padding: '12px 16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12 }}>
             <span className="font-label" style={{ fontSize: 11, color: 'var(--amber-dark)', letterSpacing: '0.04em' }}>CALORIAS TOTAIS</span>
