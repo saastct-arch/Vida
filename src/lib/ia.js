@@ -39,8 +39,9 @@ async function viaBrowserSDK({ mode, system, messages }) {
   const params =
     mode === 'chat'
       ? {
+          // max_tokens precisa ser maior que o budget de thinking (8000)
           model: MODELO_CHAT,
-          max_tokens: 4000,
+          max_tokens: 12000,
           thinking: { type: 'enabled', budget_tokens: 8000 },
           system,
           messages,
